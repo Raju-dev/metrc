@@ -1,0 +1,23 @@
+<record model="ir.actions.act_window" id="action_view_students">
+            <field name="name">Students</field>
+            <field name="res_model">student.student</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create new student
+                </p>
+            </field>
+</record>
+<record id="teste_google" model="ir.actions.act_url">
+        <field name="name">Google 1</field>
+        <field name="type">ir.actions.act_url</field>
+        <field name="target">self</field>
+        <field name="url">https://www.google.com.au/?teste2=teste2</field>
+</record>
+<menuitem id="menu_ideas" parent="menu_root" name="Ideas" sequence="10"
+          action="action_view_students"/>
+<menuitem action="teste_google"
+                name="Google 2"
+                id="menu_teste_google"
+                sequence="2"/>
