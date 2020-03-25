@@ -9,7 +9,7 @@
         'views/templates.xml',
         'security/ir.model.access.csv'
     ],
-    'depends': ['website', 'base', 'web', 'mail'],
+    'depends': ['website', 'base', 'web'],
      'installable': True,
     'auto_install': False,
     'qweb': ['static/xml/dashboard.backend.xml']
