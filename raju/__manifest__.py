@@ -8,7 +8,7 @@
     	'view.xml',
         'views/templates.xml'
     ],
-    'depends': [],
+    'depends': ['website'],
      'installable': True,
     'auto_install': False,
     'qweb': ['static/xml/dashboard.backend.xml']
