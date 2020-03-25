@@ -1,13 +1,9 @@
 odoo.define('raju.dashboard', function (require) {
 'use strict';
 
-var ajax = require('web.ajax');
 var ControlPanelMixin = require('web.ControlPanelMixin');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
-var field_utils = require('web.field_utils');
-var session = require('web.session');
-var web_client = require('web.web_client');
 var Widget = require('web.Widget');
 
 var local_storage = require('web.local_storage');
@@ -22,7 +18,7 @@ var Dashboard = Widget.extend(ControlPanelMixin, {
         this._super.apply(this, arguments);
     },
     start: function() {
-    	this.update_cp();
+        this.update_cp();
     },
     events: {
         'click .js_sync_metrc_button': 'on_link_analytics_settings'
