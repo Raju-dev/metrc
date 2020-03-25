@@ -6,7 +6,8 @@
     'description': "Hello",
     'data': [
     	'view.xml',
-        'views/templates.xml'
+        'views/templates.xml',
+        'security/ir.model.access.csv'
     ],
     'depends': ['website'],
      'installable': True,
