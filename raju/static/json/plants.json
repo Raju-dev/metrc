@@ -12,7 +12,7 @@
     "LocationId": 2,
     "LocationName": "Plants Location",
     "LocationTypeName": null,
-    "RoomId": 2,
+    "RoomId": 4,
     "RoomName": "Plants Location",
     "PatientLicenseNumber": null,
     "HarvestId": null,
@@ -28,7 +28,7 @@
     "DestroyedDate": null,
     "DestroyedNote": null,
     "DestroyedByUserName": null,
-    "LastModified": "0001-01-01T00:00:00+00:00"
+    "LastModified": "2020-10-10T10:00:00+00:00"
   },
   {
     "Id": 25,
@@ -43,7 +43,7 @@
     "LocationId": 2,
     "LocationName": "Plants Location",
     "LocationTypeName": null,
-    "RoomId": 2,
+    "RoomId": 4,
     "RoomName": "Plants Location",
     "PatientLicenseNumber": null,
     "HarvestId": null,
@@ -59,6 +59,6 @@
     "DestroyedDate": null,
     "DestroyedNote": null,
     "DestroyedByUserName": null,
-    "LastModified": "0001-01-01T00:00:00+00:00"
+    "LastModified": "2020-10-10T10:00:00+00:00"
   }
 ]

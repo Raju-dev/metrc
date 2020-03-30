@@ -67,24 +67,22 @@ class NewPage(http.Controller):
                         'user_id': id
                     })
                 new_env.cr.commit()
-
+                
                 #Sync metrc rooms
                 response = requests.get(url=METRC_BASE_URL+'/rooms/v1/active?licenseNumber='+metrc_license, headers = {'Authorization': 'Basic '+api_key })
                 json_content = json.loads(response.text)
                 ResRoom = new_env['metrc.rooms']
-                _logger.debug(json_content)
                 for key in json_content:
-                    _logger.debug(key)
                     ResRoom.create({
                         'metrc_id': key.get('Id'),
                         'name': key.get('Name'),
                         'user_id': id
                     })
-                new_env.cr.commit()                
-
+                new_env.cr.commit()
                 #Sync metrc plants
-                response = requests.get(url=METRC_BASE_URL+'/plants/v1/vegetative?licenseNumber='+metrc_license, headers = {'Authorization': 'Basic '+api_key })
-                #response = requests.get(url='http://localhost:8069/raju/static/json/plants.json', headers = {'Authorization': 'Basic '+api_key })
+                #response = requests.get(url=METRC_BASE_URL+'/plants/v1/vegetative?licenseNumber='+metrc_license, headers = {'Authorization': 'Basic '+api_key })
+                base_url = new_env['ir.config_parameter'].sudo().get_param('web.base.url')
+                response = requests.get(url=base_url+'/raju/static/json/plants.json', headers = {'Authorization': 'Basic '+api_key })
                 json_content = json.loads(response.text)
                 ResPlants = new_env['metrc.plants']
 
@@ -94,8 +92,9 @@ class NewPage(http.Controller):
                         old_string = key.get('LastModified')
                         k = old_string.rfind(":")
                         new_string = old_string[:k] + "" + old_string[k+1:]
-                        lastModified = datetime.strptime(key.get('LastModified'), "%Y-%m-%dT%H:%M:%S%z").strftime('%Y-%m-%d %H:%M:%S')
-                    ResRoom = new_env['metrc.rooms'].search([('metrc_id','=',key.get('RoomId'))])
+                        lastModified = datetime.strptime(new_string, "%Y-%m-%dT%H:%M:%S%z").strftime('%Y-%m-%d %H:%M:%S')
+                   
+                    ResRoom = new_env['metrc.rooms'].search([('metrc_id','=',21102)], limit = 1)
                     ResPlants.create({
                         'label': key.get('Label'),
                         'state': key.get('State'),
@@ -127,7 +126,6 @@ class NewPage(http.Controller):
                         'last_modified': lastModified
                     })
                 new_env.cr.commit()
-
                 ResUser = new_env['res.users'].browse([id])
                 ResUser.write({ "x_metrc_sync_status" : "synced" })
 
