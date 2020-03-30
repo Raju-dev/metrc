@@ -10,6 +10,7 @@ from odoo.modules import registry
 from odoo.addons.raju.constants.metrc import *
 import base64
 import openerp
+from datetime import datetime
 
 class NewPage(http.Controller):
     @http.route('/sync-metrc', type="json", auth='public')
@@ -23,7 +24,7 @@ class NewPage(http.Controller):
         status = 'failed'
         if response.status_code == 200:
             status = 'success'
-            ResUser.write({ "x_metrc_sync_status" : "sent" })
+            ResUser.write({ "x_metrc_sync_status" : "sent", "x_metrc_api_key": metrc_api_key, "x_metrc_user_key": metrc_user_key, "x_metrc_license": metrc_license })
             threaded_calculation = threading.Thread(target=self.sync_metrc_products, args = (request.env, metrc_api_key, metrc_user_key, metrc_license, ResUser.id))
             threaded_calculation.start()
         
@@ -36,9 +37,10 @@ class NewPage(http.Controller):
                 new_env = api.Environment(new_cr, env.uid, env.context)
                 ResCategory = new_env['metrc.categories']
 
-                key = base64.b64encode((metrc_api_key+':'+metrc_user_key).encode("utf-8")).decode('utf-8');
-                response = requests.get(url=METRC_BASE_URL+'/items/v1/categories', headers = {'Authorization': 'Basic '+key })
-                #content = requests.get(url=url, headers = {""})
+                api_key = base64.b64encode((metrc_api_key+':'+metrc_user_key).encode("utf-8")).decode('utf-8');
+                
+                #Sync metrc categories
+                response = requests.get(url=METRC_BASE_URL+'/items/v1/categories', headers = {'Authorization': 'Basic '+api_key })
                 json_content = json.loads(response.text)
                 ResCategory = new_env['metrc.categories']
                 
@@ -66,8 +68,71 @@ class NewPage(http.Controller):
                     })
                 new_env.cr.commit()
 
+                #Sync metrc rooms
+                response = requests.get(url=METRC_BASE_URL+'/rooms/v1/active?licenseNumber='+metrc_license, headers = {'Authorization': 'Basic '+api_key })
+                json_content = json.loads(response.text)
+                ResRoom = new_env['metrc.rooms']
+                _logger.debug(json_content)
+                for key in json_content:
+                    _logger.debug(key)
+                    ResRoom.create({
+                        'metrc_id': key.get('Id'),
+                        'name': key.get('Name'),
+                        'user_id': id
+                    })
+                new_env.cr.commit()                
+
+                #Sync metrc plants
+                response = requests.get(url=METRC_BASE_URL+'/plants/v1/vegetative?licenseNumber='+metrc_license, headers = {'Authorization': 'Basic '+api_key })
+                #response = requests.get(url='http://localhost:8069/raju/static/json/plants.json', headers = {'Authorization': 'Basic '+api_key })
+                json_content = json.loads(response.text)
+                ResPlants = new_env['metrc.plants']
+
+                for key in json_content:
+                    lastModified = False
+                    if key.get('LastModified'):
+                        old_string = key.get('LastModified')
+                        k = old_string.rfind(":")
+                        new_string = old_string[:k] + "" + old_string[k+1:]
+                        lastModified = datetime.strptime(key.get('LastModified'), "%Y-%m-%dT%H:%M:%S%z").strftime('%Y-%m-%d %H:%M:%S')
+                    ResRoom = new_env['metrc.rooms'].search([('metrc_id','=',key.get('RoomId'))])
+                    ResPlants.create({
+                        'label': key.get('Label'),
+                        'state': key.get('State'),
+                        'growth_phase': key.get('GrowthPhase'),
+                        'plant_batch_id': key.get('PlantBatchId'),
+                        'plant_batch_name': key.get('PlantBatchName'),
+                        'plant_batch_type_name': key.get('PlantBatchTypeName'),
+                        'strain_id': key.get('StrainId'),
+                        'strain_name': key.get('StrainName'),
+                        'location_id': key.get('LocationId'),
+                        'location_name': key.get('LocationName'),
+                        'location_type_name': key.get('LocationTypeName'),
+                        'room_id': ResRoom.id,
+                        'room_name': key.get('RoomName'),
+                        'patient_license_number': key.get('PatientLicenseNumber'),
+                        'harvest_id': key.get('HarvestId'),
+                        'harvested_unit_of_weight_name': key.get('HarvestUnitOfWeightName'),
+                        'harvested_unit_of_weight_abbreviation': key.get('HarvestedUnitOfWeightAbbreviation'),
+                        'harvested_wet_weight': key.get('HarvestedWetWeight'),
+                        'harvest_count': key.get('HarvestCount'),
+                        'is_on_hold': key.get('IsOnHold'),
+                        'planted_date': key.get('PlantedDate'),
+                        'vegetative_date': key.get('VegetativeDate'),
+                        'flowering_date': key.get('FloweringDate'),
+                        'harvested_date': key.get('HarvestedDate'),
+                        'destroyed_date': key.get('DestroyedDate'),
+                        'destroyed_note': key.get('DestroyedNote'),
+                        'destroyed_by_user_name': key.get('DestroyedByUserName'),
+                        'last_modified': lastModified
+                    })
+                new_env.cr.commit()
+
+                ResUser = new_env['res.users'].browse([id])
+                ResUser.write({ "x_metrc_sync_status" : "synced" })
+
     @http.route('/sync-metrc-status', type="json", auth='public')
     def handler(self):
         ResUser = request.env['res.users'].browse([request.session.uid])
         _logger.debug(ResUser.x_metrc_sync_status)
-        return json.dumps({ 'status': ResUser.x_metrc_sync_status })        
+        return json.dumps({ 'status': ResUser.x_metrc_sync_status, 'metrc_api_key': ResUser.x_metrc_api_key, 'metrc_user_key': ResUser.x_metrc_user_key, 'metrc_license': ResUser.x_metrc_license })        

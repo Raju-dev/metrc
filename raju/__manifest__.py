@@ -6,10 +6,9 @@
     'description': "Hello",
     'data': [
     	'view.xml',
-        'views/templates.xml',
-        'security/ir.model.access.csv'
+        'views/templates.xml'
     ],
-    'depends': ['website', 'base', 'web'],
+    'depends': ['website', 'base'],
      'installable': True,
     'auto_install': False,
     'qweb': ['static/xml/dashboard.backend.xml']

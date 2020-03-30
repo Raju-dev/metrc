@@ -18,7 +18,7 @@ var Dashboard = Widget.extend(ControlPanelMixin, {
         this._super.apply(this, arguments);
     },
     start: function() {
-        this.update_cp();
+    	this.update_cp();
     },
     events: {
         'click .js_sync_metrc_button': 'on_link_analytics_settings'
@@ -46,22 +46,53 @@ var Dashboard = Widget.extend(ControlPanelMixin, {
         }).then(function (response) {
             var backend_response = JSON.parse(response);
 
-            //if(!backend_response.status) {
+            if(!backend_response.status) {
                 $('.o_buttons').html(
                     `
                         <h3>You haven't synced your Metrc data yet. Please sync in order to start using Metrc.</h3>
                         <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8">Sync Now</button>
                     `
                 );
-            // } else if(backend_response.status == 'sent') {
-            //     $('.o_buttons').html(
-            //         `
-            //             <h3>You haven't synced your Metrc data yet. Please sync in order to start using Metrc.</h3>
-            //             <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8"><div class="wrapper-div"><div class="loader-small"></div></div>Syncing</button>
-            //         `
-            //     );
-            // }
+            } else if(backend_response.status == 'sent') {
+                 $('.o_buttons').html(
+                     `
+                         <h3>You haven't synced your Metrc data yet. Please sync in order to start using Metrc.</h3>
+                         <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8"><div class="wrapper-div"><div class="loader-small"></div></div>Syncing</button>
+                     `
+                 );
+                 self.listen_to_changes()
+            } else {
+                 $('.o_buttons').html(
+                     `
+                        <p><label>Metrc API Key:</label> ${backend_response.metrc_api_key}</p>
+                        <p><label>Metrc User Key:</label> ${backend_response.metrc_user_key}</p>
+                        <p><label>Metrc License:</label> ${backend_response.metrc_license}</p>                                           
+                        <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8">Sync Again</button>
+                     `  
+                 );
+            }
         });
+    },
+    listen_to_changes: function() {
+        console.log('listen to changes')
+        var self = this;
+        var interval = setInterval(function() {
+            self._rpc({
+                route: '/sync-metrc-status'
+            }).then(function (response) {
+                var response = JSON.parse(response)
+                if(response.status == 'synced') {
+                    $('.o_buttons').html(
+                     `
+                            <p><label>Metrc API Key:</label> ${response.metrc_api_key}</p>
+                            <p><label>Metrc User Key:</label> ${response.metrc_user_key}</p>
+                            <p><label>Metrc License:</label> ${response.metrc_license}</p>                                           
+                            <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8">Sync Again</button>
+                         `  
+                     );       
+                }     
+            })
+        }, 10000);
     },
     on_link_analytics_settings: function(ev) {
         ev.preventDefault();
@@ -111,6 +142,7 @@ var Dashboard = Widget.extend(ControlPanelMixin, {
                 'metrc_license': metrc_license
             }
         }).then(function (response) {
+            self.listen_to_changes()
             response = JSON.parse(response);
             if(response.status == 'success') {
                 self.dialog.close();

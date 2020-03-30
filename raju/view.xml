@@ -12,8 +12,22 @@
             <field name="state">code</field>
             <field name="code">action = { 'type': 'ir.actions.client', 'tag': 'raju_dashboard', 'xml_id': 'raju.raju_dashboard', 'display_name': 'Metrc' }</field>
         </record>
+
+        <!-- <record model="ir.actions.act_window" id="action_view_students">
+            <field name="name">Students</field>
+                    <field name="res_model">metrc.categories</field>
+                    <field name="view_mode">tree</field>
+                    <field name="domain">[]</field>
+                    <field name="arch" type="xml">
+                        <form>
+                            <group>
+                                <field name="id" />
+                            </group>
+                        </form>
+                    </field>
+        </record> -->
         <record id="form_all_customers" model="ir.ui.view">
-            <field name="name">All customers</field>
+            <field name="name">All categories</field>
             <field name="model">metrc.categories</field>
             <field name="type">tree</field>
             <field name="priority" eval="2"/>
@@ -27,14 +41,38 @@
 
         <record id="action_all_customers_form"
         model="ir.actions.act_window">
-            <field name="name">All customers</field>
+            <field name="name">All categories</field>
             <field name="res_model">metrc.categories</field>
             <field name="view_id" ref="form_all_customers" />
+            <field name="view_mode">tree</field>
+        </record>
+
+        <record id="form_all_plants" model="ir.ui.view">
+            <field name="name">All plants</field>
+            <field name="model">metrc.plants</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <tree create="false">
+                        <field name="label" />
+                        <field name="state" />
+                        <field name="growth_phase" />
+                        <field name="room_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_all_plants_form"
+        model="ir.actions.act_window">
+            <field name="name">All plants</field>
+            <field name="res_model">metrc.plants</field>
+            <field name="view_id" ref="form_all_plants" />
             <field name="view_mode">tree</field>
         </record>
         
         <menuitem id="metrc_menu" name="Metrc"/>
         <menuitem id="menu_custom_config" name="Sync Products" parent="metrc_menu" sequence="16" action="raju.ir_actions_server_website_dashboard"/>
         <menuitem id="new_men" name="Categories" parent="metrc_menu" sequence="17" action="action_all_customers_form"/>
+        <menuitem id="plants_menu" name="Plants" parent="metrc_menu" sequence="17" action="action_all_plants_form"/>
     </data>
 </odoo>
