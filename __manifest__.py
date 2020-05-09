@@ -1,9 +1,9 @@
 {
-    'name': 'Metrc',
+    'name': 'New Application',
     'version': '0.1',
     'category': 'Purchases',
     'website': 'https://www.odoo.com/page/purchase',
-    'description': "Hello",
+    'description': "New Application",
     'data': [
     	'view.xml',
         'views/templates.xml',
