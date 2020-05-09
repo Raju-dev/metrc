@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="ListView.buttons" id="template" xml:space="preserve">
+        <t t-jquery="button.o_list_button_add" t-operation="replace">
+            <button t-if="widget.model != 'metrc.plants'" class="btn btn-primary btn-sm sync_button o_button_help"
+                    type="button" >Add Plant</button>
+        </t>
+    </t>
+
+    <div t-name="WidgetWebsiteButton" class="o_stat_info published">
+        <span class="o_stat_text o_value"/>
+        <span class="o_stat_text">On Website</span>
+    </div>
+
+    <t t-name="metrc.dashboard_main">
+        <div class="o_metrc">
+            <div class="container-fluid">
+                <t t-call="metrc.dashboard_part"/>
+                <div class="o_website_dashboard_content"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="metrc.plant_batches">
+        <div class="o_metrc">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs nav-tabs-plants" role="tablist">
+                        <li class="active">
+                            <a href="#tab-table1" data-toggle="tab">Plant batches</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#tab-table2" data-toggle="tab">Table 2</a>
+                        </li> -->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-table1">
+                            <table id="myTable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Strain Name</th>
+                                        <th>Room</th>
+                                        <th>Location</th>
+                                        <th>Count</th>
+                                        <th>Planted Date</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- <div class="tab-pane" id="tab-table2">
+                            <table id="myTable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Position</th>
+                                        <th>Office</th>
+                                        <th>Extn.</th>
+                                        <th>Start date</th>
+                                        <th>Salary</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div> -->
+                    </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="metrc.categories">
+        <div class="o_metrc">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs nav-tabs-plants" role="tablist">
+                        <li class="active">
+                            <a href="#tab-table1" data-toggle="tab">Categories</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#tab-table2" data-toggle="tab">Table 2</a>
+                        </li> -->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-table1">
+                            <table id="myTable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Category Type</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="metrc.plants">
+        <div class="o_metrc">
+            <div class="container-fluid">
+                <ul class="nav nav-tabs nav-tabs-plants" role="tablist">
+                        <li class="active">
+                            <a href="#tab-table1" data-toggle="tab">Plants</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#tab-table2" data-toggle="tab">Table 2</a>
+                        </li> -->
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-table1">
+                            <table id="myTable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Label</th>
+                                        <th>Plant State</th>
+                                        <th>Batch Name</th>
+                                        <th>Growth Phase</th>
+                                        <th>Room</th>
+                                        <th>Location</th>
+                                        <th>Planted Date</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <!-- <div class="tab-pane" id="tab-table2">
+                            <table id="myTable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Position</th>
+                                        <th>Office</th>
+                                        <th>Extn.</th>
+                                        <th>Start date</th>
+                                        <th>Salary</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div> -->
+                    </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="metrc.right_part">
+    </t>
+
+    <t t-name="metrc.sync_dialog_content">
+        <div style="color:black;">
+            Your Metrc API Key: <input type="text" name="metrc_api_key" placeholder="Metrc API Key" style="width: 100%"></input>
+            <br/>
+            Your Metrc User Key: <input type="text" name="metrc_user_key" placeholder="Metrc User Key" style="width: 100%"></input>
+            <br/>
+            Your Metrc License: <input type="text" name="metrc_license" placeholder="Metrc License" style="width: 100%"></input>
+            <br/>
+            <span class="text-message"></span>
+        </div>
+    </t>
+
+    <t t-name="metrc.add_plant_screen">
+        <form class="create-plant-form">
+            <div class="col-md-4 form-group">
+                <label>Label</label>
+                <input type="text" class="form-control" name="label" placeholder="Plant Label" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Batch Name</label>
+                <input type="text" class="form-control" name="batch_name" placeholder="Plant Batch Name" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Batch Type</label>
+                <select name="batch_type" class="form-control">
+                    <option value="">--Select Batch Type--</option>
+                    <option value="Seed">Seed</option>
+                    <option value="Clone">Clone</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Growth Phase</label>
+                <select name="growth_phase" class="form-control">
+                    <option value="">--Select Growth Phase--</option>
+                    <option value="Young">Young</option>
+                    <option value="Vegetative">Vegetative</option>
+                    <option value="Flowering">Flowering</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 form-group selectpicker-group">
+                <label>Location</label>
+                <div class="selectpicker form-control" id="select-location"></div>
+                <input type="hidden" name="location" value=""/>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Room Name</label>
+                <div class="selectpicker form-control" id="select-room"></div>
+                <input type="hidden" name="room" value=""/>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Plant Count</label>
+                <input type="text" class="form-control" name="plant_count" placeholder="Plant Count" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Strain Name</label>
+                <div class="selectpicker form-control" id="select-strain"></div>
+                <input type="hidden" name="strain" value=""/>
+            </div> 
+
+            <div class="col-md-4 form-group">
+                <label>Planting Date</label>
+                <input type="datetime-local" name="planting_date" class="form-control o_website_form_input o_website_form_date"/>
+            </div>            
+        </form>
+    </t>
+
+    <t t-name="metrc.add_plant_batches">
+        <form class="create-plant-form">
+            <div class="col-md-12 message-div">
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Batch Name</label>
+                <input type="text" class="form-control" name="batch_name" placeholder="Plant Batch Name" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Batch Type</label>
+                <select name="batch_type" class="form-control">
+                    <option value="">--Select Batch Type--</option>
+                    <option value="Seed">Seed</option>
+                    <option value="Clone">Clone</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 form-group selectpicker-group">
+                <label>Location</label>
+                <div class="selectpicker form-control" id="select-location"></div>
+                <input type="hidden" name="location" value=""/>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Room Name</label>
+                <div class="selectpicker form-control" id="select-room"></div>
+                <input type="hidden" name="room" value=""/>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Plant Count</label>
+                <input type="text" class="form-control" name="plant_count" placeholder="Plant Count" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Strain Name</label>
+                <div class="selectpicker form-control" id="select-strain"></div>
+                <input type="hidden" name="strain" value=""/>
+            </div> 
+
+            <div class="col-md-4 form-group">
+                <label>Actual Date</label>
+                <input type="datetime-local" name="planting_date" class="form-control o_website_form_input o_website_form_date"/>
+            </div>         
+        </form>
+    </t>
+
+    <t t-name="metrc.change_growth_success">
+        <div class="col-md-12 message-div">
+            <div class="alert alert-success">
+                Growth phase changed successfully! Assigned tags are <t t-esc="tags"/>.
+            </div>
+        </div>
+    </t>
+
+    <t t-name="metrc.change_growth_phase">
+        <form class="change-growth-form">
+            <div class="col-md-12 message-div">
+            </div>
+            <div class="col-md-4 form-group">
+                <label>Starting tag</label>
+                <input type="text" class="form-control" name="starting_tag" placeholder="Plant Batch Name" />
+            </div>
+
+            <div class="col-md-4 form-group selectpicker-group">
+                <label>Location</label>
+                <div class="selectpicker form-control" id="select-location"></div>
+                <input type="hidden" name="location" value=""/>
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Plant Count</label>
+                <input type="text" class="form-control" name="plant_count" placeholder="Plant Count" />
+            </div>
+
+            <div class="col-md-4 form-group">
+                <label>Actual Date</label>
+                <input type="datetime-local" name="planting_date" class="form-control o_website_form_input o_website_form_date"/>
+            </div>         
+        </form>
+    </t>
+
+    <t t-name="metrc.dashboard_part">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Metrc Info</h2>
+                <div class="col-md-12">
+                        <div class="o_layer">
+                        </div>
+                        <div class="o_buttons text-center">
+                            <div class="wrapper-div"><div class="loader-small loader-dashboard"></div>Loading</div>
+                            <!-- <h3>You haven't synced your Metrc data yet. Please sync in order to start using Metrc.</h3>
+                            <button class="btn btn-sm btn-primary js_sync_metrc_button center-block mb8">Sync Now</button> -->
+                        </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

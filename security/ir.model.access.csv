@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_student_student,access_student_student,model_student_student,base.group_user,1,0,0,0
+access_metrc_packages,access_metrc_packages,model_metrc_packages,base.group_user,1,0,0,0
+access_metrc_rooms,access_metrc_rooms,model_metrc_rooms,base.group_user,1,0,0,0
+access_metrc_categories,access_metrc_categories,model_metrc_categories,base.group_user,1,0,0,0
+access_metrc_strains,access_metrc_strains,model_metrc_strains,base.group_user,1,0,0,0
+access_metrc_items,access_metrc_items,model_metrc_items,base.group_user,1,0,0,0
+access_metrc_units,access_metrc_units,model_metrc_units,base.group_user,1,0,0,0
+access_metrc_transfers,access_metrc_transfers,model_metrc_transfers,base.group_user,1,0,0,0
+access_metrc_plants,access_metrc_plants,model_metrc_plants,base.group_user,1,0,0,0
+access_metrc_plant_batches,metrc_plant_batches,model_metrc_plant_batches,base.group_user,1,0,0,0
